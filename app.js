@@ -21,9 +21,10 @@ client.on('ready', async () => {
     let parent = 0;
 
     const modules = [];
+    const createdChannelIDs = [];
     //Narrow down the roles to modules only
     for(const [key, value] of roles) {
-        if(value.color === 10181046 && value.name.startsWith('CIS4')) {
+        if(value.color === 10181046) {
             modules.push(value);
         }
     }
@@ -40,9 +41,10 @@ client.on('ready', async () => {
         }
 
         console.log("Creating channel for " + modules[i].name);
-        await createChannel(modules, i, parent)
-
+        createdChannelIDs.push(await createChannel(modules, i, parent));
     }
+
+    console.log("Created channels: " + createdChannelIDs);
 });
 
 async function createChannel(modules, i, parent) {
@@ -100,6 +102,7 @@ async function createChannel(modules, i, parent) {
     })
     const json = await response.json();
     console.log(json);
+    return json.id;
 }
 
 client.login(process.env.TOKEN);
